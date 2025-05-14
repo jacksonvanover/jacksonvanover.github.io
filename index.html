@@ -7,17 +7,33 @@
     <style>
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            font-family: sans-serif;
         }
         #pdf-container {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 30px;
+        }
+        .page-wrapper {
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+        .page-number {
+            text-align: center;
+            margin-top: 10px;
+            color: #555;
+            font-size: 0.9em;
         }
         canvas {
+            display: block;
             max-width: 100%;
             height: auto;
-            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -25,7 +41,7 @@
     <div id="pdf-container"></div>
 
     <script>
-        const url = './jackson_vanover_resume.pdf';
+        const url = './jackson_vanover_resume.pdf'; // Replace with your actual file path
 
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
@@ -34,6 +50,9 @@
         pdfjsLib.getDocument(url).promise.then(function(pdf) {
             for (let i = 1; i <= pdf.numPages; i++) {
                 pdf.getPage(i).then(function(page) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'page-wrapper';
+
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
                     const viewport = page.getViewport({ scale: 1.5 });
@@ -41,7 +60,14 @@
                     canvas.width = viewport.width;
                     canvas.height = viewport.height;
 
-                    container.appendChild(canvas);
+                    wrapper.appendChild(canvas);
+
+                    const pageNumber = document.createElement('div');
+                    pageNumber.className = 'page-number';
+                    pageNumber.textContent = `Page ${page.pageNumber}`;
+                    wrapper.appendChild(pageNumber);
+
+                    container.appendChild(wrapper);
 
                     page.render({
                         canvasContext: context,
