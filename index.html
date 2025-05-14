@@ -2,24 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resume Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
-        /* Ensures the iframe takes up the entire viewport */
-        html, body {
+        body {
             margin: 0;
             padding: 0;
-            height: 100%;
-            overflow: hidden;
         }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        #pdf-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <iframe src="./jackson_vanover_resume.pdf"></iframe>
+    <div id="pdf-container"></div>
+
+    <script>
+        const url = './jackson_vanover_resume.pdf';
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        const container = document.getElementById('pdf-container');
+
+        pdfjsLib.getDocument(url).promise.then(function(pdf) {
+            for (let i = 1; i <= pdf.numPages; i++) {
+                pdf.getPage(i).then(function(page) {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    const viewport = page.getViewport({ scale: 1.5 });
+
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    container.appendChild(canvas);
+
+                    page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    });
+                });
+            }
+        }).catch(function(error) {
+            container.innerHTML = `<p style="color:red;">Error loading PDF: ${error.message}</p>`;
+        });
+    </script>
 </body>
 </html>
