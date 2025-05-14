@@ -55,12 +55,6 @@
                     canvas.height = viewport.height;
 
                     wrapper.appendChild(canvas);
-
-                    const pageNumber = document.createElement('div');
-                    pageNumber.className = 'page-number';
-                    pageNumber.textContent = `Page ${page.pageNumber}`;
-                    wrapper.appendChild(pageNumber);
-
                     container.appendChild(wrapper);
 
                     page.render({
