@@ -3,6 +3,7 @@
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
 layout: default
+title: Home
 ---
 # About
 I am **Jackson Vanover**. I received my Ph.D. in Computer Science from UC Davis where I researched practical tools for testing and tuning numerical code. For some working notes on what I'm currently learning about, check out recent posts to my blog. For high-level explainers of the work I did during my dissertation, check out these blog posts.
