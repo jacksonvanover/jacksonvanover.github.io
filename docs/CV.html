@@ -1,0 +1,125 @@
+---
+layout: default
+permalink: /cv/
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        #pdf-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .page-wrapper {
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        canvas {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Floating Download Button */
+        .floating-download {
+            position: fixed;
+            background-color: #3873B3;
+            color: white;
+            padding: 12px 18px;
+            font-size: 1rem;
+            border-radius: 30px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0.4;            /* partially transparent */
+            transition: opacity 0.3s ease; /* smooth fade on hover */
+        }
+
+        .floating-download:hover {
+            opacity: 1;              /* fully opaque on hover */
+            cursor: pointer;
+        }
+
+        /* Optional: Hide on print */
+        @media print {
+            .floating-download {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PDF Container -->
+    <div id="pdf-container"></div>
+
+    <!-- Floating Download Button -->
+    <a class="floating-download" href="/jackson_vanover_resume.pdf" download>
+        ⬇️ Download PDF
+    </a>
+
+    <script>
+        const url = '/jackson_vanover_resume.pdf'; // Ensure correct path
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        const container = document.getElementById('pdf-container');
+        const button = document.querySelector('.floating-download');
+
+        pdfjsLib.getDocument(url).promise.then(function(pdf) {
+            for (let i = 1; i <= pdf.numPages; i++) {
+                pdf.getPage(i).then(function(page) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'page-wrapper';
+
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    const viewport = page.getViewport({ scale: 1.5 });
+
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    wrapper.appendChild(canvas);
+                    container.appendChild(wrapper);
+
+                    page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    });
+                });
+            }
+        }).catch(function(error) {
+            container.innerHTML = `<p style="color:red;">Error loading PDF: ${error.message}</p>`;
+        });
+
+    function updateButtonPosition() {
+        const rect = container.getBoundingClientRect();
+
+        // Example: 20px from the bottom and right of the container
+        button.style.top = (rect.top + 10) + 'px';
+        button.style.left = (rect.left + 20) + 'px';
+    }
+
+    // Update on load and on scroll/resize
+    window.addEventListener('load', updateButtonPosition);
+    window.addEventListener('resize', updateButtonPosition);
+    window.addEventListener('scroll', updateButtonPosition);
+
+    </script>
+</body>
+</html>
