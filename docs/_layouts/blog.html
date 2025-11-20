@@ -11,12 +11,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
     {% include head-custom.html %}
+    <style>
+        .wrapper {
+            width:950px;
+            margin:0 auto;
+        }
+    </style>
   </head>
   <body>
     <div class="wrapper">
-      <header>
+      <header style="width: 200px;">
         
-        <img src="{{site.profile_picture | relative_url}}" alt="Jackson Vanover" style="max-width: 400px; max-height: 300px;">
+        <img src="{{site.profile_picture | relative_url}}" alt="Jackson Vanover" style="max-width: 200px; max-height: 150px;">
 
         <br>
         <a href="/index.html">Home</a>
@@ -28,18 +34,27 @@
         <a href="https://scholar.google.com/citations?user=Q6aK_GMAAAAJ&hl=en&oi=ao">Publications</a>
         <br>
         <a href="https://github.com/jacksonvanover">GitHub</a> 
-      </header>
-      <section>
+        <br>
+        <br>
+        <p><b>About:</b>
+        <br><i>I am Jackson Vanover. I received my Ph.D. in Computer Science from UC Davis where I researched practical tools for testing and tuning numerical code.</i>
+        </p>
+        <p><b>Contact:</b>
+        <br>jacksonvanover@gmail.com
+        </p>
+    </header>
+      <section style="width: 700px;">
+        <h1> {{ page.title }} </h1>
+        <blockquote>
+        DISCUSSED: {{page.discussed}}
+        </blockquote>
+        <br>
 
       {{ content }}
 
       </section>
-      <footer>
-        <p><b>Contact:</b>
-        <br>jacksonvanover@gmail.com
-        </p>
-      </footer>
     </div>
     <script src="{{ "/assets/js/scale.fix.js" | relative_url }}"></script>
+    <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </body>
 </html>

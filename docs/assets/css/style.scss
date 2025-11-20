@@ -4,11 +4,11 @@
 @import "jekyll-theme-minimal";
 body{
     background-color: #f0f0f0;
-    font-size: 18px;
 }
 
-h1 { font-size: 2.5rem; }  /* 2.5 × body font size */
-h2 { font-size: 2rem; }
-h3 { font-size: 1.75rem; }
-p  { font-size: 1rem; }    /* same as body font size */
-li { font-size: 1rem; }
+header{
+    a{
+        font-size: 20px;
+        text-decoration: underline;
+    }
+}
