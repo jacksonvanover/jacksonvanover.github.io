@@ -6,7 +6,9 @@ layout: default
 title: Home
 ---
 # About
-I am **Jackson Vanover**. I received my Ph.D. in Computer Science from UC Davis where I researched practical tools for testing and tuning numerical code. For some working notes on what I'm currently learning about, check out recent posts to [my blog](/blog/index.html). For high-level explainers of the work I did during my dissertation, check out these blog posts.
+I am **Jackson Vanover**. I received my Ph.D. in Computer Science from UC Davis where I researched practical tools for testing and tuning numerical code.
+
+For some working notes on what I'm currently learning about, check out recent posts to [my blog](/blog/index.html). For a high-level explainer of some of the work I did during my dissertation, you can check out [this blog post]({% post_url 2025-12-01-When-Numerical-Code-Silently-Fails %}) in which I demonstrate how a tool I designed can find latent exception-handling failures in floating-point code.
 
 # Recent News
 __[11/05/25]__ A recording of the talk I gave at this year's BLIS retreat is now available to stream [here](https://www.youtube.com/watch?v=KUKl16BnfvA).
