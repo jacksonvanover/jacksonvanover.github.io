@@ -12,3 +12,11 @@ header{
         text-decoration: underline;
     }
 }
+
+@media (max-width: 1000px){
+    header{
+        a {
+            text-align: center;
+        }
+    }   
+}

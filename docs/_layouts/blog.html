@@ -12,15 +12,19 @@
     <![endif]-->
     {% include head-custom.html %}
     <style>
-        .wrapper {
-            width:950px;
-            margin:0 auto;
-        }
+        @media (min-width: 1000px){
+          .wrapper {
+              width:950px;
+              margin:0 auto;
+          }
+          header {
+            width: 200px;
+          }        
     </style>
   </head>
   <body>
     <div class="wrapper">
-      <header style="width: 200px;">
+      <header>
         
         <img src="{{site.profile_picture | relative_url}}" alt="Jackson Vanover" style="max-width: 200px; max-height: 150px;">
 
@@ -32,6 +36,8 @@
         <a href="/publications/index.html">Publications</a>
         <br>
         <a href="/cv/index.html">CV</a>
+        <br>
+        <a href="/music/index.html">Music</a>
         <br>
         <a href="https://github.com/jacksonvanover">GitHub</a> 
         <br>
