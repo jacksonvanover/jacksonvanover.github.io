@@ -1,0 +1,82 @@
+---
+layout: default
+title: Music
+permalink: /music/
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GIF Mosaic</title>
+  <style>
+    .gif-mosaic-container {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .gif-mosaic-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);  /* Transposed: 2 columns */
+      grid-template-rows: repeat(8, 1fr);     /* Transposed: 8 rows */
+      gap: 5px;
+      width: 100%;
+    }
+
+    .gif-item {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .gif-item img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div class="gif-mosaic-container">
+    <div id="gifMosaic" class="gif-mosaic-grid"></div>
+  </div>
+
+  <script>
+    // Transposed grid: 2 columns x 8 rows
+    const gifs = [
+        { src: '/assets/gifs/sweetlittleluv.gif', colStart: 1, colEnd: 2, rowStart: 1, rowEnd: 3, ratio: 1.414/1 },
+        { src: '/assets/img/cip2.jpg', colStart: 2, colEnd: 5, rowStart: 1, rowEnd: 2, ratio: 20/6 },
+        { src: '/assets/gifs/sweetlittlelove.gif', colStart: 4, colEnd: 5, rowStart: 2, rowEnd: 4, ratio: 1.414/1 },
+        { src: '/assets/gifs/theworldtonight.gif', colStart: 2, colEnd: 4, rowStart: 2, rowEnd: 3, ratio: 20/5 },
+        { src: '/assets/gifs/neverstop.gif', colStart: 3, colEnd: 4, rowStart: 3, rowEnd: 4, ratio: 1.414/1 },
+        { src: '/assets/gifs/newtoday.gif', colStart: 1, colEnd: 3, rowStart: 3, rowEnd: 4, ratio: 20/7 },
+        { src: '/assets/gifs/thereyouare.gif', colStart: 1, colEnd: 5, rowStart: 4, rowEnd: 5, ratio: 20/7 },
+    ];
+
+    const mosaic = document.getElementById('gifMosaic');
+
+    function render(){
+      mosaic.innerHTML = '';
+
+      gifs.forEach(item => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'gif-item';
+        wrapper.style.gridColumn = `${item.colStart} / ${item.colEnd}`;
+        wrapper.style.gridRow = `${item.rowStart} / ${item.rowEnd}`;
+        wrapper.style.paddingTop = `${100 / item.ratio}%`;
+
+        const img = document.createElement('img');
+        img.src = item.src;
+
+        wrapper.appendChild(img);
+        mosaic.appendChild(wrapper);
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
