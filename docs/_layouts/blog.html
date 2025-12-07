@@ -19,13 +19,17 @@
           }
           header {
             width: 200px;
-          }        
+          }
+          section {
+              width : 700px;
+          }
     </style>
   </head>
   <body>
     <div class="wrapper">
       <header>
-        
+        <div class="header-desktop">
+
         <img src="{{site.profile_picture | relative_url}}" alt="Jackson Vanover" style="max-width: 200px; max-height: 150px;">
 
         <br>
@@ -48,8 +52,27 @@
         <p><b>Contact:</b>
         <br>jacksonvanover@gmail.com
         </p>
-    </header>
-      <section style="width: 700px;">
+        </div>
+
+        <div class="header-mobile">
+        <img src="{{site.profile_picture | relative_url}}" alt="Jackson Vanover" style="max-width: 30%; max-height: auto; float: right;">
+
+        <a href="/index.html">Home</a>
+        |
+        <a href="/blog/index.html">Technical Blog</a>
+        <br>
+        <a href="/publications/index.html">Publications</a>
+        |
+        <a href="/music/index.html">Music</a>
+        <br>
+        <a href="/cv/index.html">CV</a>
+        |
+        <a href="https://github.com/jacksonvanover">GitHub</a> 
+        <br>
+        <br>
+        </div>
+      </header>
+      <section>
         <h1> {{ page.title }} </h1>
         <b>Last Updated: {{page.date | date: "%B %d, %Y"}}</b>
         <br>
