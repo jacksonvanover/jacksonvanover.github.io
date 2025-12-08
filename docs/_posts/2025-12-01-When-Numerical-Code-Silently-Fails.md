@@ -54,7 +54,7 @@ t       r   32  in      1
 result  r   32  return  1
 ```
 
-This indicates to EXCVATE that there are two 32-bit real inputs we are naming `y` and `t` and a one 32-bit real return value we are naming `result`.
+This indicates to EXCVATE that there are two 32-bit real inputs we are naming `y` and `t` and one 32-bit real return value we are naming `result`.
 ### Step 1: The Execution Selector collects a set of representative inputs for the functions under test
 We invoke the Execution Selector on the command line like so, providing the path to the prototype files and the path to the creatively-named test binary, `test`:
 ```
