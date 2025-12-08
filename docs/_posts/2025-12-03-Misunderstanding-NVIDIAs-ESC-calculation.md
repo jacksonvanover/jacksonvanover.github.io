@@ -15,7 +15,9 @@ A matrix product $$C=AB$$ can be computed as a series of independent dot product
 
 The goal of the ESC calculation is to estimate the number of extra bits needed to achieve FP64 accuracy for the dot product. The inputs to the calculation are the exponents of the maximum elements of $$\mathbf{x}$$, $$\mathbf{y}$$, and $$\mathbf{z}$$. Denote these as $$exp(max(\mathbf{w}))$$ for $$\mathbf{w} \in \{\mathbf{x}, \mathbf{y}, \mathbf{z}\}$$. The calculation is simple:
 
+<div class="equation">
 $$ESC = exp(max(\mathbf{x})) + exp(max(\mathbf{y})) - exp(max(\mathbf{z}))$$
+</div>
 
 ESC is then incremented by 1 to provide a margin of safety for the case in which the product of two scalars’ significands leads to a carry.
 

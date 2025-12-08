@@ -19,3 +19,8 @@ header{
   .header-desktop { display: none; }
   .header-mobile { display: block; a { font-size: 16px;  } }
 }
+
+.equation {
+    width: 100%;
+    overflow-x: auto;
+}
