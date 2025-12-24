@@ -1,13 +1,14 @@
 ---
 layout: blog
 title: "Grading the BLAS: Strassen vs Classical GEMM"
-discussed: floating-point rounding error, reconstructing sparsity patterns, inputs that maximize the degree of failure, some basic combinatorics
+discussed: floating-point rounding error, reconstruction of sparsity patterns, construction of inputs that maximize the degree of failure, some basic combinatorics
 ---
 At the 2024 BLIS retreat, Jim Demmel presented a slide deck titled [“Grading the BLAS”](https://www.cs.utexas.edu/~flame/BLISRetreat2024/slides/Grading_BLAS.pdf). In a recently published preprint that I discussed a bit [in a previous post]({% post_url 2025-12-03-Misunderstanding-NVIDIAs-ESC-calculation %}), NVIDIA cited that work as well as “private communications”; these works informed the inputs used to evaluate NVIDIA’s deployment of the Ozaki scheme to emulate DGEMM on INT8 Tensor Cores. Following that NVIDIA paper, the BLAS working group has started to prioritize publishing a preprint on “Grading the BLAS” so the NVIDIA folks can update their citation to something a little more fleshed-out.
 
 I have been helping out with this effort by writing test code to empirically verify that these cleverly-designed test inputs do what they are designed to do. Now, as is evident from the slides linked above, the descriptions of these inputs are pretty terse. The internal documents I am referencing are not much better. At the moment, justification for why the designs of these test matrices should indeed work is pretty much left up to the reader. So, in addition to conducting these experiments, I’ll also be diving into the theory behind the input design.
 
 In this post, I’ll be addressing test inputs designed to discriminate between $$O(n^3)$$ and Strassen-like GEMMs
+
 ## Background: The Archetypal Strassen’s Algorithm
 1.  Partition A, B, and C into equally-sized block matrices:
 
@@ -68,12 +69,14 @@ strassen n_zeros:            1685659
 -------
 ## If my understanding is correct, the likelihood of Strassen’s failure on these inputs should increase at higher dimensions
  If explanation about the accumulation of floating-point rounding error is correct, then the likelihood of Strassen’s failure should increase as the dimension increases because, as the dimension grows, the number of floating-point operations grows, and the chances of rounding error derailing perfect cancellation grows. Let’s see!
+
 ### Experiment Setup
 - __Inputs:__ As before; A, B ~ U(0,1) with 25% of their rows/cols resp. randomly selected and zeroed.
 - __Problem Sizes:__ 4, 8, 16, 32, 64, 128, 256, 512, 1024
 - __Correctness Metric:__ Percentage of zeros lost in the product
 - __Repeats:__ Regenerate A and B and rerun 20 times for each problem size
 - __Tested Implementation:__ naive 1-level Strassen that I implemented
+
 ### Results
 ![](/assets/img/Pasted image 20251222153033.png)
 
@@ -89,6 +92,7 @@ But, as we will see shortly, the accumulation of floating-point rounding error i
 In the plot above, the number of zeros lost appears to be slowly increasing as the dimension grows. But to test further by continuing to double the dimension while still doing 20x repeats would also test my poor machine and my poor patience. Let’s do a little theoretical work instead.
 
 What’s the worst case with respect to the magnitude of failure?
+
 ### In the non-recursive, 1-level Strassen I implemented, we can lose up to ~57% of the zeros given the perfect storm of rounding error and zero row/column placement…
 According to my understanding, the problem for Strassen with these types of inputs stems from the destruction of sparsity in the intermediate products which necessitates perfect cancellation to reconstruct. Look closer at each of these products: not all portions of the expression on the right hand side always destroy sparsity. Restating the formulas for the intermediate products here, recalling that A has zero rows, B has zero columns, and inspecting which submatrices are combined via additions and subtractions, we can deduce the following:
 
@@ -126,6 +130,7 @@ Now, convince yourself as I did that half of each zero row and column _must_ be 
 \end{aligned}$$</div>
 
 For my experiments with a z_ratio of 0.25, we find that we can lose at most 4/7 ~ 57% of the total zeros.
+
 ### … but worst-case zero row/column placement is exceedingly unlikely
 We only observed this worst case zero loss ratio once in the above plot: for the trace depicting the smallest GEMM of dimension 4. Why is this? We can answer this with some combinatorics.
 
@@ -152,6 +157,7 @@ Which, evaluated at our chosen dimensions, gives us the following:
 → It is EXCEEDINGLY unlikely that random row and column selection would enable the worst-case zero-loss for any problems of reasonable size.
 
 ### If we force worst-case zero row/column selection, we can more clearly see the negative effect of increased op counts on zero recovery via perfect cancellation
+
 #### Experiment Setup
 - __Inputs:__ A, B ~ U(0,1) with _worst-case zero row/column selection_
 - __Problem Sizes:__ 4, 8, 16, 32, 64, 128, 256, 512, 1024
