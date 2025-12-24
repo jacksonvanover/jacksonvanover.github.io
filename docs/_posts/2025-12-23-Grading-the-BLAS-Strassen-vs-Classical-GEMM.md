@@ -11,11 +11,11 @@ In this post, I’ll be addressing test inputs designed to discriminate between 
 ## Background: The Archetypal Strassen’s Algorithm
 1.  Partition A, B, and C into equally-sized block matrices:
 
-$$A = \begin{bmatrix} A_{11} & A_{12} \\ A_{21} & A_{22}\end{bmatrix}, B = \begin{bmatrix} B_{11} & B_{12} \\ B_{21} & B_{22} \end{bmatrix}, C = \begin{bmatrix} C_{11} & C_{12} \\ C_{21} & C_{22} \end{bmatrix}$$
+<div class="equation">$$A = \begin{bmatrix} A_{11} & A_{12} \\ A_{21} & A_{22}\end{bmatrix}, B = \begin{bmatrix} B_{11} & B_{12} \\ B_{21} & B_{22} \end{bmatrix}, C = \begin{bmatrix} C_{11} & C_{12} \\ C_{21} & C_{22} \end{bmatrix}$$</div>
 
 2. Calculate seven intermediate matrix products:
 
-$$\begin{aligned}
+<div class="equation">$$\begin{aligned}
 M_1 &= (A_{11} + A_{22}) \times (B_{11} + B_{22}) \\
 M_2 &= (A_{21} + A_{22}) \times B_{11} \\
 M_3 &= A_{11} \times (B_{12} - B_{22}) \\
@@ -23,11 +23,11 @@ M_4 &= A_{22} \times (B_{21} - B_{11}) \\
 M_5 &= (A_{11} + A_{12}) \times B_{22} \\
 M_6 &= (A_{21} - A_{11}) \times (B_{11} + B_{12}) \\
 M_7 &= (A_{12} - A_{22}) \times (B_{21} + B_{22} ) \\
-\end{aligned}$$
+\end{aligned}$$</div>
 
 3. Combine these intermediate products to form the submatrices of C:
 
-$$\begin{bmatrix}C_{11} & C_{12} \\ C_{21} & C_{22}\end{bmatrix} = \begin{bmatrix}M_1 + M_4 - M_5 + M_7 & M_3 + M_5 \\ M_2 + M_4 & M_1 - M_2 + M_3 + M_6\end{bmatrix}$$
+<div class="equation">$$\begin{bmatrix}C_{11} & C_{12} \\ C_{21} & C_{22}\end{bmatrix} = \begin{bmatrix}M_1 + M_4 - M_5 + M_7 & M_3 + M_5 \\ M_2 + M_4 & M_1 - M_2 + M_3 + M_6\end{bmatrix}$$</div>
 
 ----------
 ## Test inputs with rows and columns of zeros present a problem for Strassen
@@ -39,6 +39,7 @@ Why?
 I believe the issue arises in step (2). Though combining submatrices of A and B before multiplication allows Strassen to perform one fewer multiplication than classical $$O(n^3)$$ GEMM, it can also destroy some of the sparsity patterns, thus making those intermediate products dense. Consequently, the expected elements of C only end up zero with Strassen if the combination of intermediate products in step (3) perfectly cancels. This is assured with exact arithmetic. Not so with floating-point arithmetic, where accumulated rounding errors in each intermediate product calculated from step (2) can get left behind after what would have been perfect cancellation of the exact terms in step (3).
 
 Let’s verify this via experimentation.
+
 ### Experiment Setup
 - __Inputs:__ A, B ~ U(0,1) with 25% of their rows/cols resp. randomly selected and zeroed
 - __Problem Sizes:__ 32, 64, 128, 256, 512, 1024, 2048
@@ -50,7 +51,9 @@ Let’s verify this via experimentation.
   4. cuBLAS
   5. [OZIMMU](https://github.com/enp1s0/ozIMMU) with automatically selected slice counts, average mantissa loss threshold of 0 bits
   6. naive 1-level Strassen that I implemented
+
 ### Results
+
 ```
 blis n_zeros:                2446528
 netlibblas n_zeros:          2446528
@@ -89,7 +92,7 @@ What’s the worst case with respect to the magnitude of failure?
 ### In the non-recursive, 1-level Strassen I implemented, we can lose up to ~57% of the zeros given the perfect storm of rounding error and zero row/column placement…
 According to my understanding, the problem for Strassen with these types of inputs stems from the destruction of sparsity in the intermediate products which necessitates perfect cancellation to reconstruct. Look closer at each of these products: not all portions of the expression on the right hand side always destroy sparsity. Restating the formulas for the intermediate products here, recalling that A has zero rows, B has zero columns, and inspecting which submatrices are combined via additions and subtractions, we can deduce the following:
 
-$$\begin{aligned}
+<div class="equation">$$\begin{aligned}
 M_1 &= (A_{11} + A_{22}) \times (B_{11} + B_{22}) &\text{additive ops can destroy sparsity}\\
 M_2 &= (A_{21} + A_{22}) \times B_{11} &\text{additive ops preserve sparsity}\\
 M_3 &= A_{11} \times (B_{12} - B_{22}) &\text{additive op preserves sparsity}\\
@@ -97,11 +100,11 @@ M_4 &= A_{22} \times (B_{21} - B_{11}) &\text{additive op preserves sparsity}\\
 M_5 &= (A_{11} + A_{12}) \times B_{22} &\text{additive op preserves sparsity}\\
 M_6 &= (A_{21} - A_{11}) \times (B_{11} + B_{12}) &\text{additive ops can destroy sparsity}\\
 M_7 &= (A_{12} - A_{22}) \times (B_{21} + B_{22} ) &\text{additive ops can destroy sparsity}\\
-\end{aligned}$$
+\end{aligned}$$</div>
 
 Note that in my implementation, the multiplicative operation in each right-hand-side expression in not a recursive call to Strassen but a conventional $$O(n^3)$$ GEMM. Combining this info with the formulas for the C submatrices…
 
-$$\begin{bmatrix}C_{11} & C_{12} \\ C_{21} & C_{22}\end{bmatrix} = \begin{bmatrix}M_1 + M_4 - M_5 + M_7 & M_3 + M_5 \\ M_2 + M_4 & M_1 - M_2 + M_3 + M_6\end{bmatrix}$$
+<div class="equation">$$\begin{bmatrix}C_{11} & C_{12} \\ C_{21} & C_{22}\end{bmatrix} = \begin{bmatrix}M_1 + M_4 - M_5 + M_7 & M_3 + M_5 \\ M_2 + M_4 & M_1 - M_2 + M_3 + M_6\end{bmatrix}$$</div>
 
 …we can see that the diagonal blocks of C are the only ones at risk for losing zero entries in my 1-level Strassen implementation. This means that, for the worst case zero-loss, two events must coincide:
 1. The accumulation of floating-point rounding errors must actually hinder perfect cancellation and cause both diagonal blocks to lose all of their zeros.
@@ -109,18 +112,18 @@ $$\begin{bmatrix}C_{11} & C_{12} \\ C_{21} & C_{22}\end{bmatrix} = \begin{bmatri
 
 Let’s look further into (2). The total number of zeros is given by the following:
 
-$$\text{total zeros} = 2zn - z^2, \text{ where } z = z\_ratio * n$$
+<div class="equation">$$\text{total zeros} = 2zn - z^2, \text{ where } z = z\_ratio * n$$</div>
 
 To understand how I derived this formula: For the first term, note that $$z$$ zero-rows will contain $$zn$$ zeros, $$z$$ zero-columns will contain $$zn$$ zeroes, together this makes for $$2zn$$ zeros. For the second term, note that the first term includes a double count of the overlap of the zero rows/columns which is of size $$z^2$$; we must compensate with the subtraction.
 
 Now, convince yourself as I did that half of each zero row and column _must_ be in one of the diagonal blocks. Then, convince yourself that the maximum amount of possible zero loss can only be attained when the $$z^2$$ overlapping zeros are in the off-diagonal blocks. In such a case, we can lose at most $$2zn/2 = zn$$ zeros. We then get the following:
 
-$$\begin{aligned}
+<div class="equation">$$\begin{aligned}
 \text{worst-case zero loss ratio} &= \frac{zn}{2zn-z^2} \\
 &= \frac{n}{2n-z} \\
 &= \frac{n}{2n-(z\_ratio*n)}\\
 &= \frac{1}{2-z\_ratio}
-\end{aligned}$$
+\end{aligned}$$</div>
 
 For my experiments with a z_ratio of 0.25, we find that we can lose at most 4/7 ~ 57% of the total zeros.
 ### … but worst-case zero row/column placement is exceedingly unlikely
@@ -130,7 +133,7 @@ Recall that for the worst-case zero-loss, we need the $$z^2$$ overlapping zeros 
 
 So: The first zero-row in A can be any of them. The remaining $$z-1$$ zero-rows must then end up in the same half of A. Then, the next $$z$$ zero-columns must all be in a specific half of B. Recalling that $$z = z\_ratio *n$$, we can represent this as:
 
-$$P(\text{worst-case selection of zero rows/columns}) = \frac{(n/2) - 1 \choose 0.25n - 1}{n-1 \choose 0.25n-1} \times \frac{(n/2) \choose 0.25n}{n\choose 0.25n}$$
+<div class="equation">$$P(\text{worst-case selection of zero rows/columns}) = \frac{(n/2) - 1 \choose 0.25n - 1}{n-1 \choose 0.25n-1} \times \frac{(n/2) \choose 0.25n}{n\choose 0.25n}$$</div>
 
 Which, evaluated at our chosen dimensions, gives us the following:
 
@@ -155,6 +158,7 @@ Which, evaluated at our chosen dimensions, gives us the following:
 - __Correctness Metric:__ Percentage of zeros lost in the product
 - __Repeats:__ Regenerate A and B and rerun 20 times for each problem size
 - __Tested Implementation:__ naive 1-level Strassen that I implemented
+
 #### Results
 ![](/assets/img/Pasted image 20251222190547.png)
 
