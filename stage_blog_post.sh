@@ -20,7 +20,8 @@ sed -Ei 's|^!\[\[([^]]+)\]\]|![](/assets/img/\1)|' docs/_posts/"${TO_FILENAME}"
 
 # fix latex equations
 sed -i 's|\$|\$\$|g' docs/_posts/"${TO_FILENAME}"
-sed -i 's|\$\$\$\$|\$\$|g' docs/_posts/"${TO_FILENAME}"
+sed -i 's|^\$\$\$\$|<div class="equation">\$\$|g' docs/_posts/"${TO_FILENAME}"
+sed -i 's|\$\$\$\$|\$\$</div>|g' docs/_posts/"${TO_FILENAME}"
 
 # copy over images
 grep -oe "/assets/img/.*png" docs/_posts/"${TO_FILENAME}" | while read x
