@@ -10,11 +10,11 @@ I have been helping out with this effort by writing test code to empirically ver
 In this post, I’ll be addressing test inputs designed to discriminate between $$O(n^3)$$ and Strassen-like GEMMs
 
 ## Background: The Archetypal Strassen’s Algorithm
-1.  Partition A, B, and C into equally-sized block matrices:
+1 -  Partition A, B, and C into equally-sized block matrices:
 
 <div class="equation">$$A = \begin{bmatrix} A_{11} & A_{12} \\ A_{21} & A_{22}\end{bmatrix}, B = \begin{bmatrix} B_{11} & B_{12} \\ B_{21} & B_{22} \end{bmatrix}, C = \begin{bmatrix} C_{11} & C_{12} \\ C_{21} & C_{22} \end{bmatrix}$$</div>
 
-2. Calculate seven intermediate matrix products:
+2 - Calculate seven intermediate matrix products:
 
 <div class="equation">$$\begin{aligned}
 M_1 &= (A_{11} + A_{22}) \times (B_{11} + B_{22}) \\
@@ -26,7 +26,7 @@ M_6 &= (A_{21} - A_{11}) \times (B_{11} + B_{12}) \\
 M_7 &= (A_{12} - A_{22}) \times (B_{21} + B_{22} ) \\
 \end{aligned}$$</div>
 
-3. Combine these intermediate products to form the submatrices of C:
+3 - Combine these intermediate products to form the submatrices of C:
 
 <div class="equation">$$\begin{bmatrix}C_{11} & C_{12} \\ C_{21} & C_{22}\end{bmatrix} = \begin{bmatrix}M_1 + M_4 - M_5 + M_7 & M_3 + M_5 \\ M_2 + M_4 & M_1 - M_2 + M_3 + M_6\end{bmatrix}$$</div>
 
