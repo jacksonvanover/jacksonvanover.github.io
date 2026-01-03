@@ -59,7 +59,7 @@ Let’s verify this via experimentation.
 blis n_zeros:                2446528
 netlibblas n_zeros:          2446528
 openblas n_zeros:            2446528
-ozimmu_auto_thresh0	n_zeros: 2446528
+ozimmu_auto_thresh0 n_zeros: 2446528
 cublas n_zeros:              2446528
 strassen n_zeros:            1685659
 ```
@@ -131,7 +131,7 @@ Now, convince yourself as I did that half of each zero row and column _must_ be 
 
 For my experiments with a z_ratio of 0.25, we find that we can lose at most 4/7 ~ 57% of the total zeros.
 
-### … but worst-case zero row/column placement is exceedingly unlikely
+### …but worst-case zero row/column placement is exceedingly unlikely
 We only observed this worst case zero loss ratio once in the above plot: for the trace depicting the smallest GEMM of dimension 4. Why is this? We can answer this with some combinatorics.
 
 Recall that for the worst-case zero-loss, we need the $$z^2$$ overlapping zeros to be only in the off-diagonal blocks. Assume the zero rows/columns are selected randomly with uniform probability. Without loss of generality, say we select the zero-rows in A first. These $$z$$ zero-rows in A must be all in the same half of A. If the top half of A contains the zero rows, then the $$z$$ zero-columns in B must all be in the right half of B. Otherwise, the bottom half of A contains the zero rows and the $$z$$ zero-columns in B must be all in the left half of B. 
