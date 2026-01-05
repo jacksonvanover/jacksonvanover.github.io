@@ -1,18 +1,22 @@
 ---
 layout: blog
 title: "When Numerical Code Silently Fails: An Illustrative Example"
-discussed: finding exception-handling failures with EXCVATE, opaque compiler transformations, the idiosyncracies of the x86 MAXSS instruction
+discussed: finding exception-handling failures with my tool EXCVATE, opaque compiler transformations, the idiosyncracies of the x86 MAXSS instruction
 ---
-As investment in HPC and AI grows, so too does the importance of ensuring the correctness of the numerical code underlying these technologies. [High-profile failures of numerical software deployed in mission-critical scenarios](https://www-users.cse.umn.edu/~arnold/disasters/) highlight the disastrous costs of incorrectness. One understudied source of incorrectness is the inconsistent handling of the exceptions defined in the IEEE 754 Standard. This is especially relevant today given the landscape of modern computing: GPUs are ubiquitous and, spurred by the growing computational demands of AI, they ship with ever-evolving generations of under-documented hardware accelerators (e.g., tensor cores, matrix cores) that operate on exception-prone/low-precision data types and that prioritize performance over correctness. When exception handling bugs remain an undetected failure mode in deployed code, they can appear nondeterministically in production. This can lead to disastrous consequences. For example, during a 2020 showcase of self-driving car technology, a mishandled `NaN` value in one race car's system led to a loss of steering, [causing the car to smash into a wall](https://www.reddit.com/r/formula1/comments/jk9jrg/comment/gai295l/?context=1).
 
-Today, no existing tool is designed to detect failures in exception handling. To address this gap is to convert latent, nondeterministic runtime failures into immediate, actionable diagnostics. In doing so, debugging costs are dramatically reduced while shifting the detection of potentially catastrophic errors from deployment to development.
-
-In this post, I’ll explore how my work on EXCVATE accomplishes this via an illustrative example. Along the way, we will see:
+In this post, I’ll explore how my tool EXCVATE finds latent exception-handling failures in numerical code via an illustrative example. Along the way, we will see:
 1. An interesting case of an exception-handling failure stemming from the idiosyncratic behavior of the x86 `maxss` instruction.
 2. A high-level overview of the techniques I implemented in EXCVATE to find such failures.
 3. How the opaque nature of different compiler transformations can have surprising and unintended consequences for exception handling in floating-point programs.
 
+
 The following is adapted from the tutorial I bundled along with the source code [available here](https://github.com/ucd-plse/EXCVATE). The full paper is [available here](/assets/pdf/excvate.pdf)
+
+## Setting the scene
+As investment in HPC and AI grows, so too does the importance of ensuring the correctness of the numerical code underlying these technologies. [High-profile failures of numerical software deployed in mission-critical scenarios](https://www-users.cse.umn.edu/~arnold/disasters/) highlight the disastrous costs of incorrectness. One understudied source of incorrectness is the inconsistent handling of the exceptions defined in the IEEE 754 Standard. This is especially relevant today given the landscape of modern computing: GPUs are ubiquitous and, spurred by the growing computational demands of AI, they ship with ever-evolving generations of under-documented hardware accelerators (e.g., tensor cores, matrix cores) that operate on exception-prone/low-precision data types and that prioritize performance over correctness. When exception handling bugs remain an undetected failure mode in deployed code, they can appear nondeterministically in production. This can lead to disastrous consequences. For example, during a 2020 showcase of self-driving car technology, a mishandled `NaN` value in one race car's system led to a loss of steering, [causing the car to smash into a wall](https://www.reddit.com/r/formula1/comments/jk9jrg/comment/gai295l/?context=1).
+
+Today, no existing tool is designed to detect failures in exception handling. To address this gap is to convert latent, nondeterministic runtime failures into immediate, actionable diagnostics. In doing so, debugging costs are dramatically reduced while shifting the detection of potentially catastrophic errors from deployment to development. This is what I designed EXCVATE to do.
+
 ## A simple piece of numerical code hides a latent exception-handling failure
 Consider the squared hinge loss, given by:
 
