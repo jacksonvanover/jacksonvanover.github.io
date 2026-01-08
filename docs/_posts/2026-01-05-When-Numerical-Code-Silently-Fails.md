@@ -43,11 +43,14 @@ end module
 ```
 
 Both of these functions calculate the same quantity with the only difference being in the order of the operands for the `max` intrinsic function; _their results should be identical_. __However, as we will soon discover with EXCVATE, one of these implementations has a latent exception-handling failure when compiled with `gfortran`.__
+
+
 ## Using EXCVATE to find latent failures in exception handling
 
 ![](/assets/img/Pasted image 20251204171151.png)
 
-EXCVATE is made up of three components, each of which is implemented as a plugin for the [PIN binary instrumentation framework](https://www.intel.com/content/www/us/en/developer/articles/tool/pin-a-dynamic-binary-instrumentation-tool.html).
+EXCVATE is made up of three components, depicted in the above workflow diagram: The __Execution Selector__, the __Exception Spoofer__, and the __Input Generator__. Each of these is implemented as a plugin for the [PIN binary instrumentation framework](https://www.intel.com/content/www/us/en/developer/articles/tool/pin-a-dynamic-binary-instrumentation-tool.html). While walking through an analysis of the squared hinge loss example I introduced above, I will discuss the inputs to the overall EXCVATE workflow, each of the components, and how to interpret the results.
+
 ### Step 0: EXCVATE’s inputs
 EXCVATE requires two inputs:
 1. One or more binaries that exercise the functions we are testing. In the case of BLAS libraries, these are the developer-written regression tests bundled with the source code. Here, the tutorial comes with a simple test binary that runs the squared hinge loss functions on a handful of simple inputs.
