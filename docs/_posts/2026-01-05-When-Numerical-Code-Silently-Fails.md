@@ -1,7 +1,7 @@
 ---
 layout: blog
 title: "When Numerical Code Silently Fails: An Illustrative Example"
-discussed: finding exception-handling failures with my tool EXCVATE, opaque compiler transformations, the idiosyncracies of the x86 MAXSS instruction
+discussed: finding exception-handling failures with my tool EXCVATE, exception spoofing, taint tracking, SMT solvers, opaque compiler transformations, the idiosyncracies of the x86 MAXSS instruction
 ---
 
 In this post, I’ll explore how my tool EXCVATE finds latent exception-handling failures in numerical code via an illustrative example. Along the way, we will see:
