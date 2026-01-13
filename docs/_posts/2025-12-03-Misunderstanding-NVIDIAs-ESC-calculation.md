@@ -3,6 +3,9 @@ layout: blog
 title: (Mis)understanding NVIDIA's ESC calculation
 discussed: Ozaki-style emulation of DGEMM, Hadamard products, "Productization", FP64 dynamic range, implicit bits made explicit, my confusion
 ---
+
+(Note: On 01/12/26, I published a short update post clarifying what went wrong! After making a pass over this, be sure to [check it out]({% post_url 2026-01-12-Short-Update-Actually-Understanding-NVIDIAs-ESC-Algorithm %}).)
+
 Up for investigation: NVIDIA’s deployment of “Ozaki-style emulation” [described in this newly-posted preprint](https://arxiv.org/pdf/2511.13778).
 
 This “Ozaki-style” emulation of an FP64 matrix product $$C = AB$$ relies on a decomposition of each element of each operand into a sum of scaled INT8 values. Succinctly put, the number of INT8 slices used to represent the FP64 values is a parameter that controls the performance/precision tradeoff of the emulation, and NVIDIA has implemented a means of adaptively and conservatively setting this parameter based on the input data which, along with a native FP64 fallback, guarantees results with FP64 precision. In past talks [like this one from this year's BLIS retreat](https://www.youtube.com/watch?v=G0qUZF-8ZCo), I have heard them describe this as a "productization" of the algorithm.
