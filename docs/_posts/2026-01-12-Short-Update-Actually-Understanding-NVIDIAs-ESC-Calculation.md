@@ -1,6 +1,6 @@
 ---
 layout: blog
-title: "Short Update: Actually Understanding NVIDIA's ESC Algorithm"
+title: "Short Update: Actually Understanding NVIDIA's ESC Calculation"
 discussed: misleading toy examples, hindsight being 20/20, lessons for the future
 ---
 About a month ago, I wrote [a short blog post]({% post_url 2025-12-03-Misunderstanding-NVIDIAs-ESC-calculation %}) describing my attempt to manually apply NVIDIA’s ESC algorithm to a simple example I contrived. This was in an attempt to better understand how NVIDIA is deploying “Ozaki-style emulation” in the latest versions of cuBLAS. There was a problem though: while the methodology described in [the whitepaper](https://arxiv.org/pdf/2511.13778) is described as assuring at least double-precision accuracy for DGEMM, my calculations on the simple example yielded what appeared to be intolerable amounts of error.

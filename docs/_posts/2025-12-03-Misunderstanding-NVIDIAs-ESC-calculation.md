@@ -4,7 +4,7 @@ title: (Mis)understanding NVIDIA's ESC calculation
 discussed: Ozaki-style emulation of DGEMM, Hadamard products, "Productization", FP64 dynamic range, implicit bits made explicit, my confusion
 ---
 
-(Note: On 01/12/26, I published a short update post clarifying what went wrong! After making a pass over this, be sure to [check it out]({% post_url 2026-01-12-Short-Update-Actually-Understanding-NVIDIAs-ESC-Algorithm %}).)
+(Note: On 01/12/26, I published a short update post clarifying what went wrong! After making a pass over this, be sure to [check it out]({% post_url 2026-01-12-Short-Update-Actually-Understanding-NVIDIAs-ESC-Calculation %}).)
 
 Up for investigation: NVIDIA’s deployment of “Ozaki-style emulation” [described in this newly-posted preprint](https://arxiv.org/pdf/2511.13778).
 
