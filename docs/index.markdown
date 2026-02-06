@@ -19,6 +19,6 @@ __[09/26/25]__ I gave a talk at [this year's BLIS retreat](https://www.cs.utexas
 
 __[09/12/25]__ I received my Ph.D. in Computer Science from UC Davis!
 
-__[05/07/25]__ Our paper, _EXCVATE: Spoofing Exceptions and Solving Constraints to Test Exception Handling in Numerical Libraries_, received a __Best Paper Award__ at [ARITH'25](https://www.arith2025.org/program.html).
+__[05/07/25]__ Our paper, _EXCVATE: Spoofing Exceptions and Solving Constraints to Test Exception Handling in Numerical Libraries_, received a __Best Paper Award__ at [ARITH'25](https://www.arith2025.org/program.html). ([Photo](https://www.arith2025.org/gallery/arith_2025_16.jpeg))
 
 __[02/13/25]__ Paper accepted at [ARITH'25](https://www.arith2025.org/program.html).
