@@ -17,7 +17,7 @@ permalink: /music/
 
     .gif-mosaic-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);  /* Transposed: 2 columns */
+      grid-template-columns: repeat(8, 1fr);  /* Transposed: 2 columns */
       grid-template-rows: repeat(4, 1fr);     /* Transposed: 8 rows */
       gap: 5px;
       width: 100%;
@@ -48,13 +48,13 @@ permalink: /music/
   <script>
     // Transposed grid: 2 columns x 8 rows
     const gifs = [
-        { src: '/assets/gifs/sweetlittleluv.gif', colStart: 1, colEnd: 2, rowStart: 1, rowEnd: 3, ratio: 1.414/1, href: 'https://www.youtube.com/watch?v=YhdOP8LewYY' },
-        { src: '/assets/img/cip2.jpg', colStart: 2, colEnd: 5, rowStart: 1, rowEnd: 2, ratio: 20/6 },
-        { src: '/assets/gifs/sweetlittlelove.gif', colStart: 4, colEnd: 5, rowStart: 2, rowEnd: 4, ratio: 1.414/1, href: 'https://www.youtube.com/watch?v=YhdOP8LewYY' },
-        { src: '/assets/gifs/theworldtonight.gif', colStart: 2, colEnd: 4, rowStart: 2, rowEnd: 3, ratio: 20/5, href: 'https://www.youtube.com/watch?v=36fJZ1MDDlI' },
-        { src: '/assets/gifs/neverstop.gif', colStart: 3, colEnd: 4, rowStart: 3, rowEnd: 4, ratio: 1.414/1, href: 'https://www.youtube.com/watch?v=mbI9u8E1oTc' },
-        { src: '/assets/gifs/newtoday.gif', colStart: 1, colEnd: 3, rowStart: 3, rowEnd: 4, ratio: 20/7, href: 'https://www.youtube.com/watch?v=vc0UmyXiFTU' },
-        { src: '/assets/gifs/thereyouare.gif', colStart: 1, colEnd: 5, rowStart: 4, rowEnd: 5, ratio: 20/7, href: 'https://www.youtube.com/watch?v=4BavNq9s96U'},
+        { src: '/assets/gifs/sweetlittleluv.gif', colStart: 1, colEnd: 4, rowStart: 1, rowEnd: 3, ratio: 1.414/1, href: 'https://www.youtube.com/watch?v=YhdOP8LewYY' },
+        { src: '/assets/img/cip2.jpg', colStart: 4, colEnd: 9, rowStart: 1, rowEnd: 2, ratio: 20/6 },
+        { src: '/assets/gifs/sweetlittlelove.gif', colStart: 7, colEnd: 9, rowStart: 2, rowEnd: 4, ratio: 1.414/1, href: 'https://www.youtube.com/watch?v=YhdOP8LewYY', position: '60% 50%' },
+        { src: '/assets/gifs/theworldtonight.gif', colStart: 4, colEnd: 7, rowStart: 2, rowEnd: 3, ratio: 20/5, href: 'https://www.youtube.com/watch?v=36fJZ1MDDlI', position: '70% 50%' },
+        { src: '/assets/gifs/neverstop.gif', colStart: 5, colEnd: 7, rowStart: 3, rowEnd: 4, ratio: 1.414/1, href: 'https://www.youtube.com/watch?v=mbI9u8E1oTc', position: '40% 50%' },
+        { src: '/assets/gifs/newtoday.gif', colStart: 1, colEnd: 5, rowStart: 3, rowEnd: 4, ratio: 20/7, href: 'https://www.youtube.com/watch?v=vc0UmyXiFTU', position: '40% 50%' },
+        { src: '/assets/gifs/thereyouare.gif', colStart: 1, colEnd: 9, rowStart: 4, rowEnd: 5, ratio: 20/7, href: 'https://www.youtube.com/watch?v=4BavNq9s96U'},
       ];
 
     const mosaic = document.getElementById('gifMosaic');
@@ -63,14 +63,25 @@ permalink: /music/
       mosaic.innerHTML = '';
 
       gifs.forEach(item => {
-        const wrapper = document.createElement('a');
-        wrapper.className = 'gif-item'; wrapper.href = item.href;
+        // Use <a> only if href exists, otherwise <div>
+        const wrapper = item.href
+          ? document.createElement('a')
+          : document.createElement('div');
+
+        wrapper.className = 'gif-item';
+
+        if (item.href) {
+          wrapper.href = item.href;
+        }
+
         wrapper.style.gridColumn = `${item.colStart} / ${item.colEnd}`;
         wrapper.style.gridRow = `${item.rowStart} / ${item.rowEnd}`;
         wrapper.style.paddingTop = `${100 / item.ratio}%`;
 
         const img = document.createElement('img');
         img.src = item.src;
+        img.style.objectFit = 'cover';
+        img.style.objectPosition = item.position || 'center center';
 
         wrapper.appendChild(img);
         mosaic.appendChild(wrapper);
