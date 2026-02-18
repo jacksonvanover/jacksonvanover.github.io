@@ -11,14 +11,14 @@ I am **Jackson Vanover**. I received my Ph.D. in Computer Science from UC Davis 
 For some working notes on what I'm currently learning about, check out recent posts to [my blog](/blog/index.html). For a high-level explainer of some of the work I did during my dissertation, you can check out [this blog post]({% post_url 2026-01-05-When-Numerical-Code-Silently-Fails %}) in which I demonstrate how a tool I designed can find latent exception-handling failures in floating-point code.
 
 # Recent News
-__[11/05/25]__ A recording of the talk I gave at this year's BLIS retreat is now available to stream [here](https://www.youtube.com/watch?v=KUKl16BnfvA).
+__[11/05/25]__ A recording of the talk I gave at this year's BLIS retreat is now available to stream: [[YouTube](https://www.youtube.com/watch?v=KUKl16BnfvA)]
 
-__[10/04/25]__ I gave a talk at [DMML70](https://www.dbindel.net/dmml/program.html), a workshop held in celebration of Jim Demmel's 70th birthday.
+__[10/04/25]__ I gave a talk at DMML70, a workshop held in celebration of Jim Demmel's 70th birthday. [[Workshop Website](https://www.dbindel.net/dmml/program.html)]
 
-__[09/26/25]__ I gave a talk at [this year's BLIS retreat](https://www.cs.utexas.edu/~flame/BLISRetreat2025/Program-at-a-glance.html).
+__[09/26/25]__ I gave a talk at this year's BLIS retreat. [[Retreat Website](https://www.cs.utexas.edu/~flame/BLISRetreat2025/Program-at-a-glance.html)]
 
 __[09/12/25]__ I received my Ph.D. in Computer Science from UC Davis!
 
-__[05/07/25]__ Our paper, _EXCVATE: Spoofing Exceptions and Solving Constraints to Test Exception Handling in Numerical Libraries_, received a __Best Paper Award__ at [ARITH'25](https://www.arith2025.org/program.html). ([Photo](https://www.arith2025.org/gallery/arith_2025_16.jpeg))
+__[05/07/25]__ Our paper, _EXCVATE: Spoofing Exceptions and Solving Constraints to Test Exception Handling in Numerical Libraries_, received a __Best Paper Award__ at ARITH'25. [[Photo](https://www.arith2025.org/gallery/arith_2025_16.jpeg)][[Press Release](https://cs.lbl.gov/news-and-events/news/2025/berkeley-lab-researchers-awarded-arith-2025-best-paper/)]
 
-__[02/13/25]__ Paper accepted at [ARITH'25](https://www.arith2025.org/program.html).
+__[02/13/25]__ Paper accepted at ARITH'25. [[Conference Website](https://www.arith2025.org/program.html)]
