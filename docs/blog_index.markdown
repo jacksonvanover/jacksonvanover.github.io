@@ -19,7 +19,7 @@ permalink: /blog/
 <p style="font-style: italic; margin-left: 50px;">
     DISCUSSED: {{ post.discussed }}
 </p>
-<hr style="border: none; height: 2px; background-color: #267cb9;">
+<hr style="border: none; height: 1px; background-color: #727272;">
   {% endif %}
 {% endfor %}
 
