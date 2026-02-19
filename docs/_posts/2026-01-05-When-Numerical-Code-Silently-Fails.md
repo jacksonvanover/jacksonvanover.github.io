@@ -1,5 +1,6 @@
 ---
 layout: blog
+pinned: true
 title: "When Numerical Code Silently Fails: An Illustrative Example"
 discussed: finding exception-handling failures with my tool EXCVATE, exception spoofing, taint tracking, SMT solvers, opaque compiler transformations, the idiosyncracies of the x86 MAXSS instruction
 ---
